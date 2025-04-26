@@ -1,0 +1,160 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'imagenes/Icono/over.png' %}" />
+    <title>Carrito de Compras</title>
+    <link type="text/css" href="{% static 'css/estilo.css' %}" rel="stylesheet" />
+    <style>
+        /* Estilos CSS del segundo código */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fd2f2f8e;
+            padding-top: 10px; 
+            border-bottom: 1px solid #944e4e; 
+            border: 1px solid #490101;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #9C0001;
+            padding: 0px;
+            border-bottom: 1px solid #944e4e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #490101;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px; 
+            border: 1px solid #490101;
+        }
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border: 1px solid #520808;
+        }
+        .table th, .table td {
+            border-bottom: 1px solid #944e4e;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #490101;
+        }
+        .table th {
+            background-color: #800808;
+            font-weight: bold;
+            border: 1px solid #490101; 
+            border-bottom: 1px solid #944e4e;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #9c000083; 
+            border: 1px solid #490101;
+        }
+        .table tbody tr:hover {
+            background-color: #751818;
+            border: 1px solid #490101;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            color: #0d0d0e;
+            background-color: #2409c0d5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #38393a;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Estilos para la ventana emergente */
+        #mensaje-compra-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #mensaje-compra {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <section id="carrito" class="container">
+        <h1>Carrito de Compras</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Detalle</th>
+                    <th>Imagen</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carro %}
+                    <tr>
+                        <td>{{ item.0 }}</td>
+                        <td>{{ item.1 }}</td>
+                        <td><img src="{{item.2}}" width="50px" height="50px">
+                        <td>{{ item.3 }}</td>
+                        <td>{{ item.4 }}</td>
+                        <td>{{ item.5 }}</td>
+                        <td>
+                            <a href="{% url 'dropitem' item.0 %}" class="btn btn-primary">borrar</a>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div id="comprar">
+            <button class="btn btn-primary" onclick="mostrarMensajeCompra()">Comprar</button>
+        </div> 
+
+        <!-- Contenedor para la ventana emergente -->
+        <div id="mensaje-compra-container">
+            <div id="mensaje-compra">
+                Compra Exitosa. Te enviamos un comprobante a tu correo.
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function mostrarMensajeCompra() {
+            // Muestra el contenedor de la ventana emergente
+            document.getElementById('mensaje-compra-container').style.display = 'flex';
+            // Redirige al usuario al index después de 3 segundos
+            setTimeout(function() {
+                window.location.href = "{% url 'index' %}";
+            }, 3000); // 3000 milisegundos = 3 segundos
+        }
+    </script>
+</body>
+</html>
